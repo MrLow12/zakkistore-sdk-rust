@@ -8,12 +8,9 @@ Pustaka Rust resmi untuk memudahkan integrasi layanan Host-to-Host (H2H) prabaya
 
 ## 🚀 Instalasi & Inisialisasi
 
-Tambahkan dependensi berikut ke dalam file `Cargo.toml` proyek Anda:
-
 ```toml
 [dependencies]
-zakkistore-sdk = { git = "https://github.com/MrLow12/zakkistore-sdk-rust.git" }
-serde_json = "1.0"
+zakkistore-sdk = "1.0.2"
 ```
 
 ### Inisialisasi Klien
