@@ -27,7 +27,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         Some("https://qris.zakki.store"), // URL API Server
         Some("API_TOKEN_ANDA"),          // Token API
         Some("IBO99"),                   // iduser
-        None,                            // email
+        Some("member@gmail.com"),        // email
         Some("123456"),                  // PIN transaksi (Wajib untuk tarik/tabung)
         true,                            // Aktifkan auto-withdraw
     )?;
