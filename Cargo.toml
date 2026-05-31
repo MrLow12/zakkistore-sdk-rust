@@ -1,6 +1,6 @@
 [package]
 name = "zakkistore-sdk"
-version = "1.0.0"
+version = "1.0.1"
 edition = "2021"
 description = "Official Rust client library for Zakki Store B2B API Gateway"
 authors = ["ZakkiXD"]
