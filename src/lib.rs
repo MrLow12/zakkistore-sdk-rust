@@ -283,17 +283,47 @@ impl ZakkiStore {
     // --- 5. REWARD KOMPUTASI & UTILITY ---
     // ==========================================================
 
-    pub fn cekmining(&self) -> Result<Value, Box<dyn Error>> {
-        self._request("/cekmining", "GET", Some(json!({ "token": self.token })))
+    pub fn cekmining(&self, idmining: &str) -> Result<Value, Box<dyn Error>> {
+        if idmining.is_empty() {
+            return Err("Parameter idmining wajib diisi.".into());
+        }
+        self._request("/cekmining", "GET", Some(json!({ "idmining": idmining.trim() })))
     }
 
     pub fn mymining(&self) -> Result<Value, Box<dyn Error>> {
         self._request("/mymining", "GET", Some(json!({ "token": self.token })))
     }
 
+    pub fn mining_start(&self) -> Result<Value, Box<dyn Error>> {
+        self._request("/mining/start", "GET", Some(json!({ "token": self.token })))
+    }
+
+    pub fn miningStart(&self) -> Result<Value, Box<dyn Error>> {
+        self.mining_start()
+    }
+
+    pub fn mining_submit(&self, nonce: Value, signature: &str) -> Result<Value, Box<dyn Error>> {
+        if signature.is_empty() {
+            return Err("Parameter signature wajib disertakan.".into());
+        }
+        self._request("/mining/submit", "POST", Some(json!({
+            "token": self.token,
+            "nonce": nonce,
+            "signature": signature
+        })))
+    }
+
+    pub fn miningSubmit(&self, nonce: Value, signature: &str) -> Result<Value, Box<dyn Error>> {
+        self.mining_submit(nonce, signature)
+    }
+
     pub fn cekgacha(&self) -> Result<Value, Box<dyn Error>> {
         self._request("/cekgacha", "GET", Some(json!({ "token": self.token })))
     }
+
+    // ==========================================================
+    // --- 6. UTILITY & SECURITY ---
+    // ==========================================================
 
     pub fn whitelistip(&self, ip: &str) -> Result<Value, Box<dyn Error>> {
         self._request("/whitelistip", "POST", Some(json!({
@@ -318,6 +348,91 @@ impl ZakkiStore {
 
     pub fn status(&self) -> Result<Value, Box<dyn Error>> {
         self._request("/status", "GET", None)
+    }
+
+    // ==========================================================
+    // --- 7. METODE INTEGRASI BARU ---
+    // ==========================================================
+
+    pub fn set_callback(&self, site: &str) -> Result<Value, Box<dyn Error>> {
+        self._request("/setcallback", "GET", Some(json!({
+            "token": self.token,
+            "site": site.trim()
+        })))
+    }
+
+    pub fn setcallback(&self, site: &str) -> Result<Value, Box<dyn Error>> {
+        self.set_callback(site)
+    }
+
+    pub fn del_callback(&self) -> Result<Value, Box<dyn Error>> {
+        self._request("/delcallback", "GET", Some(json!({ "token": self.token })))
+    }
+
+    pub fn delcallback(&self) -> Result<Value, Box<dyn Error>> {
+        self.del_callback()
+    }
+
+    pub fn set_notif_bot(&self, telegram_id: &str) -> Result<Value, Box<dyn Error>> {
+        self._request("/setnotifbot", "GET", Some(json!({
+            "token": self.token,
+            "id": telegram_id.trim()
+        })))
+    }
+
+    pub fn setnotifbot(&self, telegram_id: &str) -> Result<Value, Box<dyn Error>> {
+        self.set_notif_bot(telegram_id)
+    }
+
+    pub fn del_notif_bot(&self) -> Result<Value, Box<dyn Error>> {
+        self._request("/delnotifbot", "GET", Some(json!({ "token": self.token })))
+    }
+
+    pub fn delnotifbot(&self) -> Result<Value, Box<dyn Error>> {
+        self.del_notif_bot()
+    }
+
+    pub fn check_transfer(&self, idtransfer: &str) -> Result<Value, Box<dyn Error>> {
+        self._request("/checktransfer", "GET", Some(json!({ "idtransfer": idtransfer.trim() })))
+    }
+
+    pub fn checktransfer(&self, idtransfer: &str) -> Result<Value, Box<dyn Error>> {
+        self.check_transfer(idtransfer)
+    }
+
+    pub fn my_transfer(&self, transfer_type: Option<&str>) -> Result<Value, Box<dyn Error>> {
+        self._request("/mytransfer", "GET", Some(json!({
+            "token": self.token,
+            "type": transfer_type.unwrap_or("all").trim()
+        })))
+    }
+
+    pub fn mytransfer(&self, transfer_type: Option<&str>) -> Result<Value, Box<dyn Error>> {
+        self.my_transfer(transfer_type)
+    }
+
+    pub fn my_topup(&self) -> Result<Value, Box<dyn Error>> {
+        self._request("/mytopup", "GET", Some(json!({ "token": self.token })))
+    }
+
+    pub fn mytopup(&self) -> Result<Value, Box<dyn Error>> {
+        self.my_topup()
+    }
+
+    pub fn cek_my_ip(&self) -> Result<Value, Box<dyn Error>> {
+        self._request("/cekmyip", "GET", None)
+    }
+
+    pub fn cekmyip(&self) -> Result<Value, Box<dyn Error>> {
+        self.cek_my_ip()
+    }
+
+    pub fn cek_ip(&self, ip: &str) -> Result<Value, Box<dyn Error>> {
+        self._request("/cekip", "GET", Some(json!({ "ip": ip.trim() })))
+    }
+
+    pub fn cekip(&self, ip: &str) -> Result<Value, Box<dyn Error>> {
+        self.cek_ip(ip)
     }
 
     // ==========================================================
