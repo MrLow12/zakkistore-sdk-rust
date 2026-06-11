@@ -76,6 +76,17 @@ impl ZakkiStore {
         })))
     }
 
+    pub fn cektopup2(&self, idtopup: &str) -> String {
+        let encoded: String = idtopup.chars().map(|c| {
+            if c.is_ascii_alphanumeric() || c == '-' || c == '_' {
+                c.to_string()
+            } else {
+                format!("%{:02X}", c as u32)
+            }
+        }).collect();
+        format!("{}/cektopup2?idtopup={}", self.base_url.trim_end_matches('/'), encoded)
+    }
+
     pub fn cancel(&self, id_transaksi: Option<&str>, all_pending: bool) -> Result<Value, Box<dyn Error>> {
         let mut payload = json!({ "token": self.token });
         if let Some(id) = id_transaksi {
